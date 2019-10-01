@@ -1,0 +1,2 @@
+- Icons are green that are chosen.
+- Icons are gray that aren't chosen.
