@@ -7,6 +7,7 @@ import InventoryScreen from '../screens/InventoryScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DetailScreen from '../screens/DetailScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const config = Platform.select({
     web: { headerMode: 'screen' },
@@ -19,6 +20,27 @@ const InventoryStack = createStackNavigator({
     },
     config
 );
+
+const HomeStack = createStackNavigator({
+    Home: HomeScreen,
+},
+config
+);
+
+HomeStack.navigationOptions = {
+    tabBarLabel: 'Home',
+    tabBarIcon: ({ focused }) => ( <
+        TabBarIcon focused = { focused }
+        name = {
+            Platform.OS === 'ios' ?
+            `ios-basket${focused ? '' : '-outline'}` :
+                'md-basket'
+        }
+        />
+    ),
+};
+
+HomeStack.path = '';
 
 InventoryStack.navigationOptions = {
     tabBarLabel: 'Inventory',
@@ -70,6 +92,7 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
+    HomeStack,
     InventoryStack,
     LinksStack,
     SettingsStack,
