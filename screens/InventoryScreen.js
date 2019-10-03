@@ -3,21 +3,20 @@ import { Container, Form, Picker, Icon, Content, List, ListItem, Thumbnail, Text
 import { StyleSheet, View, ProgressBarAndroid, Image } from 'react-native';
 import EventEmitter from 'events'
 
-const INVENTORY_PRODUCT = [
+let INVENTORY_PRODUCT = [
   {
     'id': 1,
     'name': 'Bitis Hunter 2018',
     'image': require('../assets/images/bitis_hunter_x_2019_black.jpg'),
     'price': '900.000',
-    'producer':'Bitis'
+    'producer': 'Bitis'
   },
   {
     'id': 2,
     'name': 'Bitis Hunter 2019',
     'image': require('../assets/images/bitis_hunter_x_2019.jpg'),
     'price': '900.000',
-    'price': 900000,
-    'producer':'Bitis'
+    'producer': 'Bitis'
 
   },
   {
@@ -25,46 +24,56 @@ const INVENTORY_PRODUCT = [
     'name': 'Bitis Hunter 2020',
     'image': require('../assets/images/bitis_hunter_x_2019_orange.jpg'),
     'price': '900.000',
-    'producer':'Bitis'
+    'producer': 'Bitis'
   },
   {
     'id': 4,
     'name': 'Bitis Hunter 2021',
     'image': require('../assets/images/bitis_hunter_x_2019_white.jpg'),
     'price': '900.000',
-    'price': 900000,
-    'producer':'Bitis'
+    'producer': 'Bitis'
   },
   {
     'id': 5,
     'name': 'Bitis Hunter 2018',
     'image': require('../assets/images/bitis_hunter_x_2019_black.jpg'),
     'price': '900.000',
-    'producer':'Bitis'
+    'producer': 'Bitis'
   },
   {
     'id': 6,
     'name': 'Bitis Hunter 2019',
     'image': require('../assets/images/bitis_hunter_x_2019.jpg'),
-    'producer':'Bitis'
+    'price': '900.000',
+    'producer': 'Bitis'
   },
   {
     'id': 7,
     'name': 'Bitis Hunter 2020',
     'image': require('../assets/images/bitis_hunter_x_2019_orange.jpg'),
     'price': '900.000',
-    'producer':'Bitis'
+    'producer': 'Bitis'
   },
   {
     'id': 8,
     'name': 'Bitis Hunter 2021',
     'image': require('../assets/images/bitis_hunter_x_2019_white.jpg'),
     'price': '900.000',
-    'producer':'Bitis'
+    'producer': 'Bitis'
   },
 ]
 
 export default class InventoryScreen extends Component {
+
+  static navigationOptions = {
+    headerRight: (
+      <Button
+        onPress={() => alert('This is a button!')}
+        title="Info"
+        color="#fff"
+      />
+    ),
+  };
 
   constructor(props) {
     super(props);
@@ -78,7 +87,6 @@ export default class InventoryScreen extends Component {
   }
 
   componentWillMount() {
-
     this.updateInventoryEvent.addListener("updateInventory", (inventory) => {
       this.updateInventory(inventory)
     })
@@ -86,25 +94,19 @@ export default class InventoryScreen extends Component {
     this.setState({
       inventoryProduct: INVENTORY_PRODUCT
     })
-    console.log("this inventoryProduct" + this.state.inventoryProduct)
   }
 
   updateInventory = (_updatedInventory) => {
     //for r update thui
     if (_updatedInventory) {
-      let updatedInventory = INVENTORY_PRODUCT.filter((inventory) => {
-        return inventory.id == _updatedInventory.id
-      })
-
-      INVENTORY_PRODUCT.map(inventory => {
-        if (inventory.id == updatedInventory.id) {
-          inventory.price = updatedInventory.price
+      let temptInventory = Object.assign([], INVENTORY_PRODUCT);
+      for (let inventory of temptInventory) {
+        if (inventory.id == _updatedInventory.id) {
+          inventory['price'] = _updatedInventory.price
         }
-      })
-
-      this.setState({ inventoryProduct: INVENTORY_PRODUCT })
+      }
+      this.setState({ inventoryProduct: temptInventory })
     }
-    // alert(JSON.stringify(_updatedInventory))
   }
 
   renderListInventory() {
@@ -114,23 +116,23 @@ export default class InventoryScreen extends Component {
           <ListItem thumbnail key={item.id} style={{ borderWidth: 0 }}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
               <Left>
-                <Thumbnail style={{width:80,height:80}} source={item.image} />
+                <Thumbnail style={{ width: 80, height: 80 }} source={item.image} />
               </Left>
               <Body>
-                <Text style={{ color: '#003459',fontSize: 16}}>{item.name}</Text>
-                <Text note numberOfLines={1} style={{ color: '#dedede',fontSize: 13 }}>{item.producer}</Text>
-                <Text note numberOfLines={1} style={{ color: '#20E347',fontSize: 16 }}>{item.price} VNĐ</Text>
-                <Text note numberOfLines={1} style={{ color: '#006494',fontSize: 13 }}>9/10 sản phẫm tồn</Text>
+                <Text style={{ color: '#003459', fontSize: 16 }}>{item.name}</Text>
+                <Text note numberOfLines={1} style={{ color: '#dedede', fontSize: 13 }}>{item.producer}</Text>
+                <Text note numberOfLines={1} style={{ color: '#20E347', fontSize: 16 }}>{item.price} VNĐ</Text>
+                <Text note numberOfLines={1} style={{ color: '#006494', fontSize: 13 }}>9/10 sản phẫm tồn</Text>
               </Body>
             </View>
-            <Right style={{width:100}}>
-              <Button style = {{backgroundColor:'#E63946',borderRadius:30}} transparent onPress={() =>
+            <Right style={{ width: 100 }}>
+              <Button style={{ backgroundColor: '#E63946', borderRadius: 30 }} transparent onPress={() =>
                 this.props.navigation.navigate('Detail',
                   {
                     inventory: item,
                     updateInventoryEvent: this.updateInventoryEvent
                   })}>
-                <Text style= {{color:"white"}}>ĐỔI GIÁ</Text>
+                <Text style={{ color: "white" }}>ĐỔI GIÁ</Text>
               </Button>
             </Right>
           </ListItem>
@@ -167,36 +169,39 @@ export default class InventoryScreen extends Component {
     return (
       <Container>
         <Content style={{ backgroundColor: '#DEDEDE' }}>
-          <Form style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 15, marginVertical: 10, backgroundColor: 'white' }}>
-            <Image style={{
-              width: 30,
-              height: 30,
-              backgroundColor: '#DEDEDE',
-              resizeMode: 'stretch'
-            }} source={require("../assets/images/filter.png")} />
-            <Picker
-              mode="dropdown"
-              style={{ width: 70 }}
-              selectedValue={this.state.selectedCategory}
-              onValueChange={this.onCategoryChange}
-            >
-              <Picker.Item label="Loại" value="all" />
-              <Picker.Item label="Bitis Hunter X 2018" value="Bitis Hunter 2018" />
-              <Picker.Item label="Bitis Hunter X 2019" value="Bitis Hunter 2019" />
-              <Picker.Item label="Bitis Hunter X 2020" value="Bitis Hunter 2020" />
-            </Picker>
-            <Picker
-              mode="dropdown"
-              selectedValue={this.state.selectedPrice}
-              onValueChange={this.onPriceChange}
-            >
-              <Picker.Item label="Số lượng" value="key0" />
-              <Picker.Item label="ATM Card" value="key1" />
-              <Picker.Item label="Debit Card" value="key2" />
-              <Picker.Item label="Credit Card" value="key3" />
-              <Picker.Item label="Net Banking" value="key4" />
-            </Picker>
-          </Form>
+          <View style={{ paddingHorizontal: 15, marginVertical: 10, backgroundColor: 'white' }}>
+            <Form style = {{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
+              <Image style={{
+                width: 30,
+                height: 30,
+                backgroundColor: '#DEDEDE',
+                resizeMode: 'stretch'
+              }} source={require("../assets/images/filter.png")} />
+              <Picker
+                mode="dropdown"
+                style={{ width: 70 , height:20}}
+                selectedValue={this.state.selectedCategory}
+                onValueChange={this.onCategoryChange}
+              >
+                <Picker.Item label="Loại" value="all" />
+                <Picker.Item label="Bitis Hunter X 2018" value="Bitis Hunter 2018" />
+                <Picker.Item label="Bitis Hunter X 2019" value="Bitis Hunter 2019" />
+                <Picker.Item label="Bitis Hunter X 2020" value="Bitis Hunter 2020" />
+              </Picker>
+              <Picker
+                mode="dropdown"
+                selectedValue={this.state.selectedPrice}
+                onValueChange={this.onPriceChange}
+              >
+                <Picker.Item label="Số lượng" value="key0" />
+                <Picker.Item label="ATM Card" value="key1" />
+                <Picker.Item label="Debit Card" value="key2" />
+                <Picker.Item label="Credit Card" value="key3" />
+                <Picker.Item label="Net Banking" value="key4" />
+              </Picker>
+            </Form>
+          </View>
+
           <List style={{ backgroundColor: 'white' }}>
             {this.renderListInventory()}
           </List>
@@ -214,6 +219,7 @@ InventoryScreen.navigationOptions = {
   headerTintColor: '#fff',
   headerTitleStyle: {
     fontWeight: 'bold',
-  },
+  }
+  
 };
 

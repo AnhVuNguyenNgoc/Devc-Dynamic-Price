@@ -1,5 +1,5 @@
 
-import React, { Component, createRef,useRef } from 'react';
+import React, { Component } from 'react';
 import {
   Input,
   DatePicker
@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import RadioButton from '../components/RadioButton'
 export default class DetailScreen extends Component {
-  inputRef = createRef();
 
   constructor(props) {
     super(props);
@@ -29,7 +28,6 @@ export default class DetailScreen extends Component {
   componentDidMount() {
     const { params } = this.props.navigation.state;
     const inventory = params ? params.inventory : null;
-    alert("id " + inventory.id)
   }
 
   onCategoryCheckBox = (value) => {
@@ -40,19 +38,18 @@ export default class DetailScreen extends Component {
     const { params } = this.props.navigation.state;
     let inventory = params ? params.inventory : null;
     const updateInventoryEvent = params ? params.updateInventoryEvent : null;
-    var value = this.inputRef.current.value;
-    if (value) { // if validation fails, value will be null
-      alert("price " + value)
+    var value =this.inputRef.wrappedInstance._lastNativeText;
+    if (value) { 
+      let updateInventory ={
+        id:inventory.id,
+        price:value
+      }
+      updateInventoryEvent.emit("updateInventory", updateInventory)
+      this.props.navigation.navigate('Home')
     }
-    alert("price " + value)
-
-
-    // inventory.price =this._price.value
-    updateInventoryEvent.emit("updateInventory", inventory)
-  }
-
-  onValuePriceChange = (price) => {
-    alert("price " + price + " refs" + this.refs.price)
+    else{
+      this.props.navigation.navigate('Home')
+    }
   }
 
   refPrice = (component) => {
@@ -93,16 +90,16 @@ export default class DetailScreen extends Component {
             </View>
             <View style={styles.priceWrapper}>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={{ fontSize: 13, color: '#DEDEDE', marginRight: 10 }}>
+                <Text style={{ fontSize: 13, color: '#AEAEAE', marginRight: 10 }}>
                   Gợi ý giá
             </Text>
-                <Text style={{ fontSize: 15, color: '#DEDEDE' }}>
+                <Text style={{ fontSize: 15, color: '#AEAEAE' }}>
                   900.000 - 1.000.000
             </Text>
               </View>
               <View style={{ flexDirection: 'row' }}>
-                <Input placeholder="990.000" style={{ left: 0, width: 300 }} ref={this.inputRef}
-                  onChange={this.onValuePriceChange} />
+                <Input placeholder="990.000" style={{ left: 0, width: 300 }} ref={(input) => { this.inputRef = input }}
+                />
                 <Text style={{ fontSize: 15, color: 'black', padding: 10 }}>
                   VNĐ
             </Text>
@@ -132,7 +129,6 @@ export default class DetailScreen extends Component {
                   animationType={"fade"}
                   androidMode={"default"}
                   placeHolderText="Select date"
-                  textStyle={{ color: "green" }}
                   placeHolderTextStyle={{ color: "#d3d3d3" }}
                   onDateChange={this.setDate}
                   disabled={false}
