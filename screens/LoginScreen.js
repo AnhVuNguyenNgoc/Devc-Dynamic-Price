@@ -18,10 +18,10 @@ export default class Login extends Component {
                     </Text>
                 </View>
                 <View style={styles.formContainer}>
-                    <LoginForm />
+                    <LoginForm navigateMain={this.props.navigation} />
                 </View>
                 <View style={styles.otherLogin}>
-                    <OtherLogin/>
+                    <OtherLogin navigateMain={this.props.navigation} />
                 </View>
             </View>
         )

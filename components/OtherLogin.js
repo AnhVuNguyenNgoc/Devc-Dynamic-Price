@@ -2,7 +2,7 @@ import * as Facebook from 'expo-facebook';
 import MainTabNavigator from '../navigation/MainTabNavigator';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
-export async function facebookLogIn() {
+export async function facebookLogIn(props) {
     try {
         const {
             type,
@@ -19,7 +19,7 @@ export async function facebookLogIn() {
             let linkGetInfo = "https://graph.facebook.com/me?access_token=" + token
             let response = await fetch(linkGetInfo);
             let info = await response.json();
-            alert('Success login! Hi ' + info.name);
+            props.navigateMain.navigate('Details');
         } else {
             // type === 'cancel'
         }
