@@ -1,86 +1,44 @@
 import React, { Component } from 'react';
-import { Container, Form, Picker, Icon, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
+import { Container, DatePicker, Form, Picker, Icon, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
 import { StyleSheet, View, ProgressBarAndroid, Image } from 'react-native';
 import EventEmitter from 'events'
 import firebase from '../constants/firebase'
 let INVENTORY_PRODUCT = [
-    {
-        'id': 1,
-        'name': 'Bitis Hunter 2018',
-        'image': require('../assets/images/bitis_hunter_x_2019_black.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
-    {
-        'id': 2,
-        'name': 'Bitis Hunter 2019',
-        'image': require('../assets/images/bitis_hunter_x_2019.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
 
-    },
-    {
-        'id': 3,
-        'name': 'Bitis Hunter 2020',
-        'image': require('../assets/images/bitis_hunter_x_2019_orange.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
-    {
-        'id': 4,
-        'name': 'Bitis Hunter 2021',
-        'image': require('../assets/images/bitis_hunter_x_2019_white.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
-    {
-        'id': 5,
-        'name': 'Bitis Hunter 2018',
-        'image': require('../assets/images/bitis_hunter_x_2019_black.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
-    {
-        'id': 6,
-        'name': 'Bitis Hunter 2019',
-        'image': require('../assets/images/bitis_hunter_x_2019.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
-    {
-        'id': 7,
-        'name': 'Bitis Hunter 2020',
-        'image': require('../assets/images/bitis_hunter_x_2019_orange.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
-    {
-        'id': 8,
-        'name': 'Bitis Hunter 2021',
-        'image': require('../assets/images/bitis_hunter_x_2019_white.jpg'),
-        'price': '900.000',
-        'producer': 'Bitis'
-    },
 ]
 
-export default class OrderScreen extends Component {
+// {
+//     'orderId': '#10001',
+//     'date': '30/09/2019 2.30 PM',
+//     'status': 'Đã thanh toán',
+//     'totalAmount': '1400000'
+//     , 'imgURL': require('../assets/images/bitis_hunter_x_2019_black.jpg')
+// },
+// {
+//     'orderId': '#10002',
+//     'date': '29/09/2019 2.30 PM',
+//     'status': 'Đã thanh toán',
+//     'totalAmount': '1400000'
+//     , 'imgURL': require('../assets/images/bitis_hunter_x_2019.jpg')
+// },
 
-    static navigationOptions = {
-        headerRight: (
-            <Button
-                onPress={() => alert('This is a button!')}
-                title="Info"
-                color="#fff"
-            />
-        ),
-    };
+var imgArr = [
+    {
+        'black': require('../assets/images/bitis_hunter_x_2019_black.jpg')
+    },
+    {
+        'white': require('../assets/images/bitis_hunter_x_2019_black.jpg')
+    }
+]
+export default class OrderScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             inventoryProduct: [],
             selectedCategory: undefined,
-            selectedPrice: undefined
+            selectedPrice: undefined,
+            inventoryLength: null
         };
 
         this.updateInventoryEvent = new EventEmitter()
@@ -90,15 +48,13 @@ export default class OrderScreen extends Component {
         this.updateInventoryEvent.addListener("updateInventory", (inventory) => {
             this.updateInventory(inventory)
         })
-        console.log(firebase)
-
-        this.writeOrderData("100002", "30/09/2019 2.30 PM", "Đã thanh toán", "1.400.000", '../assets/images/bitis_hunter_x_2019_black.jpg')
-        this.readOnceListOrderData()
-        this.setState({
-            inventoryProduct: INVENTORY_PRODUCT
-        })
+        // this.writeOrderData("100002", "30/09/2019 2.30 PM", "Đã thanh toán", "1.400.000", '../assets/images/bitis_hunter_x_2019_black.jpg')
+        let orderArr = this.readOnceListOrderData()
     }
 
+    componentDidMount(){
+        this.readUpdatedOrderData()
+    }
     writeOrderData = (orderId, date, status, totalAmount, imgURL) => {
         firebase.database().ref('orders/' + orderId).set({
             orderId: orderId,
@@ -110,30 +66,53 @@ export default class OrderScreen extends Component {
     }
 
     readOnceListOrderData = () => {
-        return firebase.database().ref('orders').once('value', function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var childKey = childSnapshot.key;
-                var childData = childSnapshot.val();
+        firebase.database().ref('orders').once('value').then((snapshot) => {
+            if (snapshot) {
+                let orderArr = []
+                snapshot.forEach(function (childSnapshot) {
 
-                console.log("orderId " + childData.orderId + " date " + childData.date)
-            });
+                    if (childSnapshot && childSnapshot.val()) {
+                        let childData = childSnapshot.val();
+                        let { orderId, date, status, totalAmount } = childSnapshot.val()
+                        if (orderId && date && status && totalAmount) {
+                            order = {
+                                'orderId': orderId,
+                                'date': date,
+                                'status': status,
+                                'totalAmount': totalAmount,
+                                'imgURL': require('../assets/images/bitis_hunter_x_2019_black.jpg')
+                            }
+                            orderArr.push(order)
+                        }
+                    }
+                });
+                this.setState({
+                    inventoryProduct: orderArr,
+                    inventoryLength: orderArr.length
+                })
+            }
+            return null
         });
     }
 
+    readUpdatedOrderData = () => {
+        return firebase.database().ref("orders").on('value', function (snapshot) {
+            // Do whatever
 
-
-    updateInventory = (_updatedInventory) => {
-        //for r update thui
-        if (_updatedInventory) {
-            let temptInventory = Object.assign([], INVENTORY_PRODUCT);
-            for (let inventory of temptInventory) {
-                if (inventory.id == _updatedInventory.id) {
-                    inventory['price'] = _updatedInventory.price
+            //if length > inventoryLength  
+            // update price
+            // if()
+            if(snapshot){
+                var size = Object.keys(snapshot.val()).length;
+                if(this.state.inventoryLength){
+                    if(size > this.state.inventoryLength){
+    
+                    }
                 }
             }
-            this.setState({ inventoryProduct: temptInventory })
-        }
+        });
     }
+
 
     renderListInventory() {
         if (this.state.inventoryProduct) {
@@ -142,24 +121,16 @@ export default class OrderScreen extends Component {
                     <ListItem thumbnail key={item.id} style={{ borderWidth: 0 }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <Left>
-                                <Thumbnail style={{ width: 80, height: 80 }} source={item.image} />
+                                <Thumbnail style={{ width: 80, height: 80 }} source={item.imgURL} />
                             </Left>
                             <Body>
-                                <Text style={{ color: '#003459', fontSize: 16 }}>{item.name}</Text>
-                                <Text note numberOfLines={1} style={{ color: '#dedede', fontSize: 13 }}>{item.producer}</Text>
-                                <Text note numberOfLines={1} style={{ color: '#20E347', fontSize: 16 }}>{item.price} VNĐ</Text>
-                                <Text note numberOfLines={1} style={{ color: '#006494', fontSize: 13 }}>9/10 sản phẫm tồn</Text>
+                                <Text style={{ color: '#003459', fontSize: 18 }}>{item.orderId}</Text>
+                                <Text note numberOfLines={1} style={{ color: '#DCD7D7', fontSize: 13 }}>{item.date}</Text>
+                                <Text note numberOfLines={1} style={{ color: '#E63946', fontSize: 16 }}>{item.status}</Text>
                             </Body>
                         </View>
                         <Right style={{ width: 100 }}>
-                            <Button style={{ backgroundColor: '#E63946', borderRadius: 30 }} transparent onPress={() =>
-                                this.props.navigation.navigate('Detail',
-                                    {
-                                        inventory: item,
-                                        updateInventoryEvent: this.updateInventoryEvent
-                                    })}>
-                                <Text style={{ color: "white" }}>ĐỔI GIÁ</Text>
-                            </Button>
+                            <Text note numberOfLines={1} style={{ color: '#20E347', fontSize: 16 }}>{item.totalAmount}đ</Text>
                         </Right>
                     </ListItem>
                 )
@@ -186,11 +157,6 @@ export default class OrderScreen extends Component {
         }
     }
 
-    onPriceChange = (value) => {
-
-        console.log("onPriceChange" + this.state.selectedPrice)
-    }
-
     render() {
         return (
             <Container>
@@ -205,26 +171,30 @@ export default class OrderScreen extends Component {
                             }} source={require("../assets/images/filter.png")} />
                             <Picker
                                 mode="dropdown"
-                                style={{ width: 70, height: 20 }}
+                                style={{ width: 70, height: 50 }}
                                 selectedValue={this.state.selectedCategory}
                                 onValueChange={this.onCategoryChange}
                             >
-                                <Picker.Item label="Loại" value="all" />
-                                <Picker.Item label="Bitis Hunter X 2018" value="Bitis Hunter 2018" />
-                                <Picker.Item label="Bitis Hunter X 2019" value="Bitis Hunter 2019" />
-                                <Picker.Item label="Bitis Hunter X 2020" value="Bitis Hunter 2020" />
+                                <Picker.Item label="Tình trạng" value="all" />
+                                <Picker.Item label="Đang giao hàng" value="isShipping" />
+                                <Picker.Item label="Đã thanh toán" value="checkout" />
+                                <Picker.Item label="Đã hủy" value="cancel" />
                             </Picker>
-                            <Picker
-                                mode="dropdown"
-                                selectedValue={this.state.selectedPrice}
-                                onValueChange={this.onPriceChange}
-                            >
-                                <Picker.Item label="Số lượng" value="key0" />
-                                <Picker.Item label="ATM Card" value="key1" />
-                                <Picker.Item label="Debit Card" value="key2" />
-                                <Picker.Item label="Credit Card" value="key3" />
-                                <Picker.Item label="Net Banking" value="key4" />
-                            </Picker>
+                            <DatePicker
+                                defaultDate={new Date(2018, 4, 4)}
+                                minimumDate={new Date(2018, 1, 1)}
+                                maximumDate={new Date(2018, 12, 31)}
+                                locale={"en"}
+                                timeZoneOffsetInMinutes={undefined}
+                                modalTransparent={false}
+                                animationType={"fade"}
+                                androidMode={"default"}
+                                placeHolderText="Select date"
+                                textStyle={{ color: "green" }}
+                                placeHolderTextStyle={{ color: "#d3d3d3" }}
+                                onDateChange={this.setDate}
+                                disabled={false}
+                            />
                         </Form>
                     </View>
 
