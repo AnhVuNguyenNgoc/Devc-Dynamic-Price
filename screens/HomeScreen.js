@@ -6,25 +6,25 @@ import Carousel from 'react-native-snap-carousel';
 
 let inventoryProduct = [
     {
-        'id': 1,
-        'title': 'Sản phẩm bán chạy',
-        'name': 'Bitis Hunter 2019',
-        'image': require('../assets/images/bitis1.jpg'),
-        'price': 900000
+        id: 1,
+        title: 'Sản phẩm bán chạy',
+        name: 'Bitis Hunter 2019',
+        image: require('../assets/images/bitis1.jpg'),
+        price: 900000
     },
     {
-        'id': 2,
-        'title': 'Sản phẩm tồn kho',
-        'name': 'Dép bitis',
-        'image': require('../assets/images/bitis2.jpg'),
-        'price': 900000
+        id: 2,
+        title: 'Sản phẩm tồn kho',
+        name: 'Dép bitis',
+        image: require('../assets/images/bitis2.jpg'),
+        price: 900000
     },
     {
-        'id': 3,
-        'title': 'Sản phẩm còn nhiều',
-        'name': 'Bitis Hunter 2017',
-        'image': require('../assets/images/bitis3.jpg'),
-        'price': 900000
+        id: 3,
+        title: 'Sản phẩm còn nhiều',
+        name: 'Bitis Hunter 2017',
+        image: require('../assets/images/bitis3.jpg'),
+        price: 900000
     },
 ]
 let linkIcon = {
@@ -43,6 +43,35 @@ let storage = {
     invoice: 15,
     store: 0
 }
+let inventoryChart = [
+    {
+        image: require('../assets/images/line-chart.png'),
+        title: 'Doanh thu',
+        description: 'Tổng doanh thu ',
+        status: 'tăng ',
+        profit: '21%',
+        linkDetail: '',
+        colorText: '#20E347',
+    },
+    {
+        image: require('../assets/images/column-chart.png'),
+        title: 'Hàng tồn',
+        description: 'Số hàng tồn ',
+        status: 'giảm ',
+        profit: '9%',
+        linkDetail: '',
+        colorText: '#20E347',
+    },    
+    {
+        image: require('../assets/images/bars-chart.png'),
+        title: 'Chi tiết',
+        description: 'Số đơn đặt hàng ',
+        status: 'tăng ',
+        profit: '10%',
+        linkDetail: '',
+        colorText: '#20E347',
+    },    
+]
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 export default class HomeScreen extends Component {
@@ -57,6 +86,22 @@ export default class HomeScreen extends Component {
         this.setState({
             selected: value
         });
+    }
+
+    renderWeatherView() {
+        return (
+            <View>
+                <View style={styles.containerWeather}>
+                    <Image
+                        source={require('../assets/images/thunderstorms.png')}
+                        style={styles.weatherImage}
+                    />
+                    <Text style={styles.weatherNumber}>21</Text>
+                    <Text style={styles.weatherTemperature}>°C</Text>
+                </View>
+                <Text style={styles.weatherText}>Mưa rồi, ra ngoài cẩn thận nha bạn!</Text>
+            </View>
+        );
     }
 
     renderStatusView() {
@@ -116,7 +161,7 @@ export default class HomeScreen extends Component {
                     <View style={styles.statusRow}>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click") }}>
+                            onPress={() => { return alert("da click 4") }}>
                             <Text style={styles.statusNumber}>
                                 {storage.delivery}
                             </Text>
@@ -131,7 +176,7 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 2") }}>
+                            onPress={() => { return alert("da click 5") }}>
                             <Text style={styles.statusNumber}>
                                 {storage.invoice}
                             </Text>
@@ -146,7 +191,7 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 3") }}>
+                            onPress={() => { return alert("da click 6") }}>
                             <Text style={styles.statusNumber}>
                                 {storage.store}
                             </Text>
@@ -155,7 +200,7 @@ export default class HomeScreen extends Component {
                                 resizeMode="stretch"
                                 style={styles.choiceImage}
                             />
-                            <Text>Chuyển cửa hàng</Text>
+                            <Text>Cửa hàng</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -215,31 +260,55 @@ export default class HomeScreen extends Component {
         );
     }
 
-    // _renderChart({ item, index }) {
-    //     return (
-    //         <View style={styles.todayDetail}>
-    //             <Text style={styles.todayText}>Sản phẩm bán chạy</Text>
-    //             <Image
-    //                 source={item.image}
-    //                 resizeMode="stretch"
-    //                 style={styles.swipeImage}
-    //             />
-    //         </View>
-    //     );
-    // }
+    _renderImageChart({ item, index }) {
+        return (
+            <View style={styles.todayDetail}>
+                <Text style={styles.todayText}>{item.title}</Text>
+                <Image
+                    source={item.image}
+                    resizeMode="stretch"
+                    style={styles.swipeImage}
+                />
+                <View style={styles.chartContainerText}>
+                    <Text style={styles.chartDescription}>{item.description}</Text>
+                    <Text style={[styles.chartStatus, {color: item.colorText}]}>{item.status}</Text>
+                    <Text style={[styles.chartProfit, {color: item.colorText}]}>{item.profit}</Text>
+                </View>
+                <Button transparent onPress={() => alert('Chức năng đang phát triển')} style={styles.todayText}>
+                    <Text>Chi tiết</Text>
+                </Button>
+            </View>
+        );
+    }
+    
+    // {
+    //     image: require('../assets/images/bars-chart.png'),
+    //     title: 'Chi tiết',
+    //     description: 'Số đơn đặt hàng ',
+    //     status: 'tăng ',
+    //     profit: '10%',
+    //     linkDetail: ''
+    // },    
 
-    // renderBrief() {
-    //     return (
-    //         <View>
-    //             <View>
-    //                 <Text style={styles.title}>Hôm nay thế nào?</Text>
-    //             </View>
-    //             <View>
-    //                 {this.renderCarousel(inventoryProduct, this._renderImage)}
-    //             </View>
-    //         </View>
-    //     );
-    // }
+    renderChart() {
+        return (
+            <View>
+                <View style={styles.chartContainerTitle}>
+                    <Text style={styles.title}>Tóm tắt trạng thái</Text>
+                    <Text style={styles.chartDate}>7 ngày qua</Text>
+                    <Button transparent onPress={() => alert('Chức năng đang phát triển')}>
+                        <Image
+                            source={require('../assets/images/down-arrow.png')}
+                            style={styles.chartButton}
+                        />
+                    </Button>
+                </View>
+                <View>
+                    {this.renderCarousel(inventoryChart, this._renderImageChart)}
+                </View>
+            </View>
+        );
+    }
 
     render() {
         return (
@@ -247,7 +316,7 @@ export default class HomeScreen extends Component {
                 <Content>
                     <List>
                         <View style={styles.weather}>
-
+                            {this.renderWeatherView()}
                         </View>
                         <View style={styles.status}>
                             {this.renderStatusView()}
@@ -255,8 +324,8 @@ export default class HomeScreen extends Component {
                         <View style={styles.status}>
                             {this.renderTodayView()}
                         </View>
-                        <View style={styles.brief}>
-
+                        <View style={styles.chart}>
+                            {this.renderChart()}
                         </View>
                     </List>
                 </Content>
@@ -277,17 +346,57 @@ HomeScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
+    title: {
+        color: '#006494',
+        fontSize: 25,
+        marginBottom: 10,
+    },
     weather: {
-        backgroundColor: 'blue',
+        backgroundColor: '#FEFEFE',
+        height: viewportHeight / 4.5,
+        marginHorizontal: 15,
+        marginVertical: 10,
+        borderRadius: 15,
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+
+        elevation: 10,
+    },
+    containerWeather: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        paddingVertical: 20,
+    },
+    weatherImage: {
+        width: 80,
+    },
+    weatherNumber: {
+        width: 37,
+        fontSize: 35,
+    },
+    weatherTemperature: {
+    },
+    weatherText: {
+        color: '#006494',
+        fontSize: 24,
+        alignSelf: 'center',
+        marginHorizontal: 20,
     },
     status: {
-        marginHorizontal: 40,
+        marginHorizontal: 15,
         marginVertical: 10,
         flexDirection: 'column',
         justifyContent: 'space-between',
     },
     statusContent: {
-        //backgroundColor: '#E8F1F2',
+        backgroundColor: '#E8F1F2',
+        borderRadius: 15,
     },
     statusRow: {
         flexDirection: 'row',
@@ -295,7 +404,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     statusDetail: {
-        flex: 0.3,
+        flex: 0.333333,
+        borderWidth: 0.5,
+        borderColor: 'white',
+        alignItems: 'center',
+        textAlign: 'center'
     },
     statusNumber: {
         fontSize: 24,
@@ -303,24 +416,14 @@ const styles = StyleSheet.create({
         color: '#FF686B',
     },
     today: {
-        backgroundColor: 'red',
-    },
-    brief: {
-        backgroundColor: 'blue',
-    },
-    title: {
-        color: '#006494',
-        fontSize: 25,
-        marginBottom: 10,
     },
     slider: {
-        marginTop: 15,
-        marginHorizontal: 10,
-        overflow: 'visible' // for custom animations
+        // marginHorizontal: 10,
+        overflow: 'visible'
     },
     sliderContentContainer: {
         marginHorizontal: 10,
-        paddingVertical: 10 // for custom animation
+        paddingVertical: 10
     },
     swipeImage: {
         width: viewportWidth - 100,
@@ -342,6 +445,36 @@ const styles = StyleSheet.create({
     },
     todayButton: {
         marginBottom: 7,
+    },
+    chart: {
+    },
+    chartContainerTitle: {
+        flexDirection: 'row',
+        marginHorizontal: 15,
+    },
+    chartDate: {
+        marginLeft: 5,
+        fontSize: 25,
+        color: '#20E347',
+    },
+    chartButton: {
+        width: 22,
+        height: 22,
+        marginLeft: 3,
+    },
+    chartContainerText: {
+        flexDirection: 'row',
+        marginVertical: 7,
+    },
+    chartDescription: {
+        fontSize: 17,
+    },
+    chartStatus: {
+        fontSize: 17,
+        fontWeight: 'bold'
+    },
+    chartProfit: {
+        fontSize: 25,
     }
 });
 
