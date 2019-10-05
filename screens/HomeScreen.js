@@ -266,7 +266,14 @@ export default class HomeScreen extends Component {
 }
 
 HomeScreen.navigationOptions = {
-    title: 'Home'
+    title: 'Trang chủ',
+    headerStyle: {
+        backgroundColor: '#0AFAD5',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+        fontWeight: 'bold',
+    },
 };
 
 const styles = StyleSheet.create({

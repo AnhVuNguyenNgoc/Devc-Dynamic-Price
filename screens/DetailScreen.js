@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
 });
 
 DetailScreen.navigationOptions = {
-  title: 'Detail Product',
+  title: 'Chi tiết tồn kho',
   headerStyle: {
     backgroundColor: '#0AFAD5',
   },

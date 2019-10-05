@@ -212,7 +212,7 @@ export default class InventoryScreen extends Component {
 }
 
 InventoryScreen.navigationOptions = {
-  title: 'Inventory',
+  title: 'Tồn kho',
   headerStyle: {
     backgroundColor: '#0AFAD5',
   },

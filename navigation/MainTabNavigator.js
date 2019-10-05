@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Image } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -22,37 +22,56 @@ const InventoryStack = createStackNavigator({
 );
 
 const HomeStack = createStackNavigator({
-    Home: HomeScreen,
-},
-config
-);
-
+        Home: HomeScreen,
+    },
+    config
+); {
+    /* <TabBarIcon focused = { focused }
+            name = {
+                Platform.OS === 'ios' ?
+                `ios-basket${focused ? '' : '-outline'}` :
+                    'md-basket'
+            }
+            /> */
+}
 HomeStack.navigationOptions = {
-    tabBarLabel: 'Home',
-    tabBarIcon: ({ focused }) => ( <
-        TabBarIcon focused = { focused }
-        name = {
-            Platform.OS === 'ios' ?
-            `ios-basket${focused ? '' : '-outline'}` :
-                'md-basket'
+    tabBarLabel: 'Trang chủ',
+    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarIcon: ({ focused }) => {
+        if (focused) {
+            return <Image source = { require("../assets/images/DevC/DevC/btnhome.png") }
+            style = {
+                { width: 34, height: 34 }
+            }
+            />
+        }
+        return <Image source = { require("../assets/images/DevC/DevC/btnhome_na.png") }
+        style = {
+            { width: 34, height: 34 }
         }
         />
-    ),
+    },
 };
 
 HomeStack.path = '';
 
 InventoryStack.navigationOptions = {
-    tabBarLabel: 'Inventory',
-    tabBarIcon: ({ focused }) => ( <
-        TabBarIcon focused = { focused }
-        name = {
-            Platform.OS === 'ios' ?
-            `ios-basket${focused ? '' : '-outline'}` :
-                'md-basket'
+    tabBarLabel: 'Tồn kho',
+    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarIcon: ({ focused }) => {
+        if (focused) {
+            return <Image source = { require("../assets/images/DevC/DevC/btninventory.png") }
+            style = {
+                { width: 34, height: 34 }
+            }
+            />
+        }
+        return <Image source = { require("../assets/images/DevC/DevC/btninventory_na.png") }
+        style = {
+            { width: 34, height: 34 }
         }
         />
-    ),
+    },
 };
 
 InventoryStack.path = '';
@@ -64,12 +83,22 @@ const LinksStack = createStackNavigator({
 );
 
 LinksStack.navigationOptions = {
-    tabBarLabel: 'Dashboard',
-    tabBarIcon: ({ focused }) => ( <
-        TabBarIcon focused = { focused }
-        name = { Platform.OS === 'ios' ? 'ios-trending-up' : 'md-trending-up' }
+    tabBarLabel: 'Đơn hàng',
+    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarIcon: ({ focused }) => {
+        if (focused) {
+            return <Image source = { require("../assets/images/DevC/DevC/btnbill.png") }
+            style = {
+                { width: 34, height: 34 }
+            }
+            />
+        }
+        return <Image source = { require("../assets/images/DevC/DevC/btnbill_na.png") }
+        style = {
+            { width: 34, height: 34 }
+        }
         />
-    ),
+    },
 };
 
 LinksStack.path = '';
@@ -81,12 +110,22 @@ const SettingsStack = createStackNavigator({
 );
 
 SettingsStack.navigationOptions = {
-    tabBarLabel: 'Settings',
-    tabBarIcon: ({ focused }) => ( <
-        TabBarIcon focused = { focused }
-        name = { Platform.OS === 'ios' ? 'ios-options' : 'md-options' }
+    tabBarLabel: 'Cài đặt',
+    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarIcon: ({ focused }) => {
+        if (focused) {
+            return <Image source = { require("../assets/images/DevC/DevC/btnsetting.png") }
+            style = {
+                { width: 34, height: 34 }
+            }
+            />
+        }
+        return <Image source = { require("../assets/images/DevC/DevC/btnsetting_na.png") }
+        style = {
+            { width: 34, height: 34 }
+        }
         />
-    ),
+    },
 };
 
 SettingsStack.path = '';
