@@ -3,6 +3,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import Login from '../screens/LoginScreen'
+import NotFoundScreen from '../screens/NotFoundScreen'
 
 export default createAppContainer(
   createSwitchNavigator({
@@ -11,5 +12,6 @@ export default createAppContainer(
     // Main: MainTabNavigator,
     Main: Login,
     Details: MainTabNavigator,
+    Errors: NotFoundScreen,
   })
 );

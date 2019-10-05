@@ -61,7 +61,7 @@ let inventoryChart = [
         profit: '9%',
         linkDetail: '',
         colorText: '#20E347',
-    },    
+    },
     {
         image: require('../assets/images/bars-chart.png'),
         title: 'Chi tiết',
@@ -70,7 +70,7 @@ let inventoryChart = [
         profit: '10%',
         linkDetail: '',
         colorText: '#20E347',
-    },    
+    },
 ]
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -88,7 +88,7 @@ export default class HomeScreen extends Component {
         });
     }
 
-    renderWeatherView() {
+    renderWeatherView = () => {
         return (
             <View>
                 <View style={styles.containerWeather}>
@@ -104,7 +104,7 @@ export default class HomeScreen extends Component {
         );
     }
 
-    renderStatusView() {
+    renderStatusView = () => {
         return (
             <View>
                 <View>
@@ -114,7 +114,7 @@ export default class HomeScreen extends Component {
                     <View style={styles.statusRow}>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click") }}>
+                            onPress={() => { this.props.navigation.navigate('Errors') }}>
                             <Text style={styles.statusNumber}>
                                 {storage.modify}
                             </Text>
@@ -129,7 +129,7 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 2") }}>
+                            onPress={() => { this.props.navigation.navigate('Errors') }}>
                             <Text style={styles.statusNumber}>
                                 {storage.verify}
                             </Text>
@@ -144,7 +144,7 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 3") }}>
+                            onPress={() => { this.props.navigation.navigate('Errors') }}>
                             <Text style={styles.statusNumber}>
                                 {storage.cancel}
                             </Text>
@@ -161,7 +161,7 @@ export default class HomeScreen extends Component {
                     <View style={styles.statusRow}>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 4") }}>
+                            onPress={() => { this.props.navigation.navigate('Errors') }}>
                             <Text style={styles.statusNumber}>
                                 {storage.delivery}
                             </Text>
@@ -176,7 +176,7 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 5") }}>
+                            onPress={() => { this.props.navigation.navigate('Errors') }}>
                             <Text style={styles.statusNumber}>
                                 {storage.invoice}
                             </Text>
@@ -191,7 +191,7 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.statusDetail}
-                            onPress={() => { return alert("da click 6") }}>
+                            onPress={() => { this.props.navigation.navigate('Errors') }}>
                             <Text style={styles.statusNumber}>
                                 {storage.store}
                             </Text>
@@ -208,7 +208,7 @@ export default class HomeScreen extends Component {
         )
     }
 
-    _renderProduct({ item, index }) {
+    _renderProduct = ({ item, index }) => {
         return (
             <View style={styles.todayDetail}>
                 <Image
@@ -222,14 +222,14 @@ export default class HomeScreen extends Component {
                 <Text style={styles.todayText}>
                     {item.name}
                 </Text>
-                <Button rounded danger style={styles.todayButton}>
+                <Button rounded danger style={styles.todayButton} onPress={() => { this.props.navigation.navigate('Errors') }}>
                     <Text>     Xem thêm     </Text>
                 </Button>
             </View>
         );
     }
 
-    renderCarousel(dataRender, fnRender) {
+    renderCarousel = (dataRender, fnRender) => {
         return (
             <Carousel
                 // ref={(c) => { this._carousel = c; }}
@@ -247,7 +247,7 @@ export default class HomeScreen extends Component {
         )
     }
 
-    renderTodayView() {
+    renderTodayView = () => {
         return (
             <View>
                 <View>
@@ -260,7 +260,7 @@ export default class HomeScreen extends Component {
         );
     }
 
-    _renderImageChart({ item, index }) {
+    _renderImageChart = ({ item, index }) => {
         return (
             <View style={styles.todayDetail}>
                 <Text style={styles.todayText}>{item.title}</Text>
@@ -271,24 +271,15 @@ export default class HomeScreen extends Component {
                 />
                 <View style={styles.chartContainerText}>
                     <Text style={styles.chartDescription}>{item.description}</Text>
-                    <Text style={[styles.chartStatus, {color: item.colorText}]}>{item.status}</Text>
-                    <Text style={[styles.chartProfit, {color: item.colorText}]}>{item.profit}</Text>
+                    <Text style={[styles.chartStatus, { color: item.colorText }]}>{item.status}</Text>
+                    <Text style={[styles.chartProfit, { color: item.colorText }]}>{item.profit}</Text>
                 </View>
-                <Button transparent onPress={() => alert('Chức năng đang phát triển')} style={styles.todayText}>
+                <Button transparent onPress={() => { this.props.navigation.navigate('Errors') }} style={styles.todayText}>
                     <Text>Chi tiết</Text>
                 </Button>
             </View>
         );
     }
-    
-    // {
-    //     image: require('../assets/images/bars-chart.png'),
-    //     title: 'Chi tiết',
-    //     description: 'Số đơn đặt hàng ',
-    //     status: 'tăng ',
-    //     profit: '10%',
-    //     linkDetail: ''
-    // },    
 
     renderChart() {
         return (
@@ -296,7 +287,7 @@ export default class HomeScreen extends Component {
                 <View style={styles.chartContainerTitle}>
                     <Text style={styles.title}>Tóm tắt trạng thái</Text>
                     <Text style={styles.chartDate}>7 ngày qua</Text>
-                    <Button transparent onPress={() => alert('Chức năng đang phát triển')}>
+                    <Button transparent onPress={() => this.props.navigation.navigate('Errors')}>
                         <Image
                             source={require('../assets/images/down-arrow.png')}
                             style={styles.chartButton}
@@ -442,9 +433,12 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: '#073B4C',
         marginVertical: 7,
+        borderTopWidth: 1,
+        borderRadius: 0,
     },
     todayButton: {
         marginBottom: 7,
+        justifyContent: 'center'
     },
     chart: {
     },
