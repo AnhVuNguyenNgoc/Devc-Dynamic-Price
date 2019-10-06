@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import InventoryScreen from '../screens/InventoryScreen';
-import LinksScreen from '../screens/LinksScreen';
+import OrderScreen from '../screens/OrderScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DetailScreen from '../screens/DetailScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -36,7 +36,7 @@ const HomeStack = createStackNavigator({
 }
 HomeStack.navigationOptions = {
     tabBarLabel: 'Trang chủ',
-    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarOptions: { showIcon: true, activeTintColor: '#06D6A0', },
     tabBarIcon: ({ focused }) => {
         if (focused) {
             return <Image source = { require("../assets/images/DevC/DevC/btnhome.png") }
@@ -57,7 +57,7 @@ HomeStack.path = '';
 
 InventoryStack.navigationOptions = {
     tabBarLabel: 'Tồn kho',
-    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarOptions: { showIcon: true, activeTintColor: '#06D6A0', },
     tabBarIcon: ({ focused }) => {
         if (focused) {
             return <Image source = { require("../assets/images/DevC/DevC/btninventory.png") }
@@ -76,15 +76,15 @@ InventoryStack.navigationOptions = {
 
 InventoryStack.path = '';
 
-const LinksStack = createStackNavigator({
-        Links: LinksScreen,
+const OrdersStack = createStackNavigator({
+        Orders: OrderScreen,
     },
     config
 );
 
-LinksStack.navigationOptions = {
+OrdersStack.navigationOptions = {
     tabBarLabel: 'Đơn hàng',
-    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarOptions: { showIcon: true, activeTintColor: '#06D6A0', },
     tabBarIcon: ({ focused }) => {
         if (focused) {
             return <Image source = { require("../assets/images/DevC/DevC/btnbill.png") }
@@ -101,7 +101,7 @@ LinksStack.navigationOptions = {
     },
 };
 
-LinksStack.path = '';
+OrdersStack.path = '';
 
 const SettingsStack = createStackNavigator({
         Settings: SettingsScreen,
@@ -111,7 +111,7 @@ const SettingsStack = createStackNavigator({
 
 SettingsStack.navigationOptions = {
     tabBarLabel: 'Cài đặt',
-    tabBarOptions: { showIcon: true, activeTintColor : '#06D6A0', },
+    tabBarOptions: { showIcon: true, activeTintColor: '#06D6A0', },
     tabBarIcon: ({ focused }) => {
         if (focused) {
             return <Image source = { require("../assets/images/DevC/DevC/btnsetting.png") }
@@ -133,7 +133,7 @@ SettingsStack.path = '';
 const tabNavigator = createBottomTabNavigator({
     HomeStack,
     InventoryStack,
-    LinksStack,
+    OrdersStack,
     SettingsStack,
 });
 

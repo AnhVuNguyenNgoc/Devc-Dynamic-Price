@@ -38,16 +38,16 @@ export default class DetailScreen extends Component {
     const { params } = this.props.navigation.state;
     let inventory = params ? params.inventory : null;
     const updateInventoryEvent = params ? params.updateInventoryEvent : null;
-    var value =this.inputRef.wrappedInstance._lastNativeText;
-    if (value) { 
-      let updateInventory ={
-        id:inventory.id,
-        price:value
+    var value = this.inputRef.wrappedInstance._lastNativeText;
+    if (value) {
+      let updateInventory = {
+        id: inventory.id,
+        price: value
       }
       updateInventoryEvent.emit("updateInventory", updateInventory)
       this.props.navigation.navigate('Home')
     }
-    else{
+    else {
       this.props.navigation.navigate('Home')
     }
   }
@@ -98,7 +98,8 @@ export default class DetailScreen extends Component {
             </Text>
               </View>
               <View style={{ flexDirection: 'row' }}>
-                <Input placeholder="990.000" style={{ left: 0, width: 300 }} ref={(input) => { this.inputRef = input }}
+                <Input keyboardType='numberic'
+                  placeholder="990.000" style={{ left: 0, width: 300 }} ref={(input) => { this.inputRef = input }}
                 />
                 <Text style={{ fontSize: 15, color: 'black', padding: 10 }}>
                   VNĐ

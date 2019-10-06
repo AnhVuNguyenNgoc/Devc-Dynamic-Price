@@ -65,16 +65,6 @@ let INVENTORY_PRODUCT = [
 
 export default class InventoryScreen extends Component {
 
-  static navigationOptions = {
-    headerRight: (
-      <Button
-        onPress={() => alert('This is a button!')}
-        title="Info"
-        color="#fff"
-      />
-    ),
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -97,7 +87,6 @@ export default class InventoryScreen extends Component {
   }
 
   updateInventory = (_updatedInventory) => {
-    //for r update thui
     if (_updatedInventory) {
       let temptInventory = Object.assign([], INVENTORY_PRODUCT);
       for (let inventory of temptInventory) {
@@ -193,11 +182,11 @@ export default class InventoryScreen extends Component {
                 selectedValue={this.state.selectedPrice}
                 onValueChange={this.onPriceChange}
               >
-                <Picker.Item label="Số lượng" value="key0" />
-                <Picker.Item label="ATM Card" value="key1" />
-                <Picker.Item label="Debit Card" value="key2" />
-                <Picker.Item label="Credit Card" value="key3" />
-                <Picker.Item label="Net Banking" value="key4" />
+                <Picker.Item label="Số lượng" value="all" />
+                <Picker.Item label="10" value="10" />
+                <Picker.Item label="50" value="50" />
+                <Picker.Item label="100" value="100" />
+                <Picker.Item label="200" value="200" />
               </Picker>
             </Form>
           </View>
