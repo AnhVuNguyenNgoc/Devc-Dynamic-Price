@@ -38,7 +38,7 @@ export default class OrderScreen extends Component {
             inventoryProduct: [],
             selectedCategory: undefined,
             selectedPrice: undefined,
-            inventoryLength: null
+            inventoryLength: 0
         };
 
         this.updateInventoryEvent = new EventEmitter()
@@ -104,11 +104,7 @@ export default class OrderScreen extends Component {
             // if()
             if(snapshot){
                 var size = Object.keys(snapshot.val()).length;
-                if(this.state.inventoryLength){
-                    if(size > this.state.inventoryLength){
-    
-                    }
-                }
+            
             }
         });
     }
